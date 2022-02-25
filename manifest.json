@@ -1,0 +1,36 @@
+{
+    "manifest_version": 2,
+    "name": "Blur Images",
+    "version": "1.0",
+    "description": "Blur images on the current web page",
+    "icons": {
+        "48": "icon.png"
+    },
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_title": "Blur Images",
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "activeTab",
+        "storage",
+        "http://127.0.0.1/",
+        "http://127.0.0.1:8001/"
+    ],
+    "content_scripts": [
+        {
+            "js": [
+                "js/external/jquery-3.3.1.min.js",
+                "js/background.js",
+                "js/main.js",
+                "js/external/bootstrap.min.js",
+                "js/external/popper.min.js"
+            ],
+            "matches": [
+                "http://*/*",
+                "https://*/*"
+            ]
+        }
+    ],
+    "content_security_policy": "script-src 'self' https://api.allorigins.win/; object-src 'self'"
+}
