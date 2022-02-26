@@ -14,23 +14,34 @@
     "permissions": [
         "activeTab",
         "storage",
-        "http://127.0.0.1/",
-        "http://127.0.0.1:8001/"
+        "tabs",
+        "https://boards.4channel.org/*",
+        "https://boards.4chan.org/*",
+        "http://boards.4channel.org/*",
+        "http://boards.4chan.org/*"
     ],
     "content_scripts": [
         {
             "js": [
                 "js/external/jquery-3.3.1.min.js",
-                "js/background.js",
                 "js/main.js",
                 "js/external/bootstrap.min.js",
                 "js/external/popper.min.js"
             ],
             "matches": [
                 "http://*/*",
-                "https://*/*"
+                "https://*/*",
+                "*://boards.4channel.org/*",
+                "*://boards.4chan.org/*",
+                "<all_urls>"
             ]
         }
     ],
+    "background": {
+        "scripts": [
+            "js/background.js"
+        ],
+        "persistent": false
+    },
     "content_security_policy": "script-src 'self' https://api.allorigins.win/; object-src 'self'"
 }

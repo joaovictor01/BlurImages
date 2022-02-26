@@ -1,3 +1,12 @@
+async function getFromStorage (key) {
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.get(key, resolve)
+  }).then(result => {
+    if (key == null) return result
+    else return result[key]
+  })
+}
+
 function blurImage () {
   // $('img').addClass('blur-image')
   let images = document.getElementsByTagName('img')
@@ -15,10 +24,10 @@ function getBlurStyle (radiusImage, radiusThumb) {
   return `<style> .blur-image { -webkit-filter: blur(${radiusImage}px); filter: blur(${radiusImage}px) } .blurthumb { -webkit-filter: blur(${radiusThumb}px); -moz-filter: blur(${radiusThumb}px); -o-filter: blur(${radiusThumb}px); -ms-filter: blur(${radiusThumb}px); filter: blur(${radiusThumb}px); width: 100px; height: 100px; background-color: #ccc;}</style>`
 }
 
-function addListeners () {
+async function addListeners () {
   let blurStyle = getBlurStyle(10, 5)
   $(blurStyle).appendTo('head')
-  let blurActivated = JSON.parse(localStorage.getItem('blurImages'))
+  let blurActivated = await getFromStorage('blurImages')
   blurImage()
 
   $(window).scroll(function () {
@@ -43,9 +52,9 @@ function removeListeners () {
   unblurImage()
 }
 
-function blurImagesReceiver (request, sender, sendResponse) {
+async function blurImagesReceiver (request, sender, sendResponse) {
   // if (localStorage.getItem('blurImages') === true) {
-  let blur = JSON.parse(localStorage.getItem('blurImages'))
+  let blur = await getFromStorage('blurImages')
   if (request.command === 'init') {
     addListeners()
     if (blur) {
@@ -59,11 +68,9 @@ function blurImagesReceiver (request, sender, sendResponse) {
 }
 chrome.runtime.onMessage.addListener(blurImagesReceiver)
 
-window.onload = function () {
-  let blur = JSON.parse(localStorage.getItem('blurImages'))
+window.onload = async function () {
+  let blur = await getFromStorage('blurImages')
   if (blur === true) {
-    console.log('entrou aqui')
-    console.log(blur)
     addListeners()
   } else {
     removeListeners()
