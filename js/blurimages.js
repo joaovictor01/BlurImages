@@ -1,10 +1,10 @@
 let blurImagesInput = document.getElementById('blurImages')
 let blurImages = JSON.parse(localStorage.getItem('blurImages'))
-console.log(blurImages)
+console.log(`blurimages.js - blurImage: ${blurImages}`)
 
 blurImagesInput.checked = blurImages
 
-blurImagesInput.onchange = function (element) {
+function checkBlurStatus () {
   let value = this.checked
 
   localStorage.setItem('blurImages', value)
@@ -33,3 +33,11 @@ blurImagesInput.onchange = function (element) {
     localStorage.setItem('blurImages', false)
   }
 }
+
+blurImagesInput.onchange = function (element) {
+  checkBlurStatus()
+}
+
+window.onload(() => {
+  checkBlurStatus()
+})

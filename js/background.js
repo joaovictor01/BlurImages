@@ -1,4 +1,4 @@
-localStorage.setItem('blurImages', true)
+localStorage.setItem('blurImages', false)
 
 function messageTab (tabs) {
   browser.tabs.sendMessage(tabs[0].id, {

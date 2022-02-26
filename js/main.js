@@ -57,9 +57,6 @@ function blurImagesReceiver (request, sender, sendResponse) {
   }
   sendResponse({ result: 'success' })
 }
-
-// chrome.runtime.onMessage.addListener(blurImagesReceiver)
-
 chrome.runtime.onMessage.addListener(blurImagesReceiver)
 
 window.onload = function () {
