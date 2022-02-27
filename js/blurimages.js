@@ -1,15 +1,21 @@
-let blurImagesInput = document.getElementById('blurImages')
-let blurImages = JSON.parse(localStorage.getItem('blurImages'))
+const blurImagesInput = document.getElementById('blurImages')
+const blurIntensityInput = document.getElementById('blurIntensity')
+const blurIntensitySpan = document.getElementById('blurIntensityValue')
 
 async function getFromStorage (key) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _reject) => {
     chrome.storage.sync.get(key, resolve)
   }).then(result => {
     if (key == null) return result
-    else return result[key]
+    return result[key]
   })
 }
 
+$('#blurIntensity').change(function () {
+  rangeSlide(this.value)
+})
+
+/* Set the blur status input with stored value */
 chrome.storage.sync.get('blurImages', function (data) {
   try {
     blurImagesInput.checked = data.blurImages
@@ -18,35 +24,76 @@ chrome.storage.sync.get('blurImages', function (data) {
   }
 })
 
-async function checkBlurStatus (element) {
-  let value = await getFromStorage('blurImages')
+/* Set the blur intensity input and span with stored value */
+chrome.storage.sync.get('blurIntensity', function (data) {
   try {
-    value = element.checked
+    blurIntensityInput.value = data.blurIntensity
+    blurIntensitySpan.innerHTML = data.value
   } catch (error) {
     console.log(error)
   }
+})
 
-  chrome.storage.sync.set({ blurImages: value }, function () {})
-
-  if (value) {
+/* Check the blur status and apply it */
+async function checkBlurStatus (element) {
+  let blurActive = await getFromStorage('blurImages')
+  try {
+    blurActive = element.checked
+  } catch (error) {
+    console.log(error)
+  }
+  chrome.storage.sync.set({ blurImages: blurActive }, function () {})
+  if (blurActive) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, { command: 'init', hide: value }, function (response) {
-        // console.log(response.result)
+      chrome.tabs.sendMessage(tabs[0].id, { command: 'init', hide: blurActive }, function (
+        _response
+      ) {
+        console.log(_response)
       })
     })
   } else {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, { command: 'remove', hide: value }, function (response) {
-        // console.log(response.result)
+      chrome.tabs.sendMessage(tabs[0].id, { command: 'remove', hide: blurActive }, function (
+        _response
+      ) {
+        console.log(_response)
       })
     })
   }
 }
 
-blurImagesInput.onchange = function (element) {
+/* Check the blur intensity and apply it */
+async function checkBlurIntensity (value) {
+  let blurIntensity = await getFromStorage('blurIntensity')
+  try {
+    blurIntensity = value
+  } catch (error) {
+    console.log(error)
+  }
+  chrome.storage.sync.set({ blurIntensity: blurIntensity }, function () {})
+  if (blurIntensity) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { command: 'setBlurIntensity', intensity: blurIntensity },
+        function (_response) {
+          console.log(_response)
+        }
+      )
+    })
+  }
+}
+
+blurImagesInput.onchange = function (_element) {
   checkBlurStatus(this)
 }
 
 window.onload = function () {
   checkBlurStatus(blurImagesInput)
+}
+
+function rangeSlide (value) {
+  document.getElementById('blurIntensityValue').innerHTML = value
+  blurIntensity = value
+  checkBlurIntensity(blurIntensity)
 }

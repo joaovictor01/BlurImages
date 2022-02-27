@@ -9,25 +9,35 @@
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/bootstrap.min.css">
   <link rel="stylesheet" href="./css/floating-labels.css">
-  <link href="./css/font-awesome.min.css" rel="stylesheet" />
-  <link href="./css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/font-awesome.min.css" />
+  <link rel="stylesheet" href="./css/select2.min.css" />
 </head>
 
 <body>
-  <main class="container m-3">
-    <div class="row justify-content-center">
-      <input class="big-checkbox col" type="checkbox" name="blurImages" id="blurImages">
-      <label class="col-10" for="blurImages">Blur images</label>
+  <main class="container">
+    <div class="switch__container">
+      <label class="title text-center" for="blurImages">
+        <h2>Blur Images</h1>
+      </label>
+      <input id="blurImages" class="switch switch--shadow" type="checkbox">
+      <label for="blurImages"></label>
+
+      <div class="mt-3 text-center">
+        <label for="blurIntensity">
+          <h2>Blur intensity</h2>
+        </label>
+        <span id="blurIntensityValue">5</span>
+        <input id="blurIntensity" class="range" type="range" value="5" min="0" max="20" />
+      </div>
     </div>
   </main>
-
   <!-- Javascript imports -->
   <script type="text/javascript" src="./js/external/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="./js/external/popper.min.js"></script>
   <script type="text/javascript" src="./js/external/bootstrap.min.js"></script>
   <script type="text/javascript" src="./js/external/select2.full.js"></script>
   <script type="text/javascript" src="./js/blurimages.js"></script>
-  <!-- <script type="text/javascript" src=".js/main.js"></script> -->
+  <script type="text/javascript" src="./js/main.js"></script>
 </body>
 
 </html>
