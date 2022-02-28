@@ -66,6 +66,7 @@ async function blurImagesReceiver (request, sender, sendResponse) {
     }
   } else if (request.command === 'setBlurIntensity' && request.intensity) {
     blurIntensity = request.intensity
+    setBlurStyle()
   } else {
     removeListeners()
     unblurImage()
@@ -76,7 +77,7 @@ chrome.runtime.onMessage.addListener(blurImagesReceiver)
 
 window.onload = async function () {
   let blurActive = await getFromStorage('blurImages')
-  blurIntensity = await getFromStorage('blurIntensity')
+  blurIntensity = (await getFromStorage('blurIntensity')) || 5
   if (blurIntensity) {
     setBlurStyle()
   }

@@ -28,7 +28,7 @@ chrome.storage.sync.get('blurImages', function (data) {
 chrome.storage.sync.get('blurIntensity', function (data) {
   try {
     blurIntensityInput.value = data.blurIntensity
-    blurIntensitySpan.innerHTML = data.value
+    blurIntensitySpan.innerHTML = data.blurIntensity
   } catch (error) {
     console.log(error)
   }
