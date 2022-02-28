@@ -1,4 +1,4 @@
 .vscode/
 dist/
-.prettierc
-.eslintrc
+.prettierc*
+.eslintrc*
