@@ -1,2 +1,2 @@
 # BlurImages
-Blur all images on the page
+Browser extension to blur all images on the page
