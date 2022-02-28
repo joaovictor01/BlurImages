@@ -1,5 +1,6 @@
 let blurIntensity
 
+/* Get key from the storage */
 async function getFromStorage (key) {
   return new Promise((resolve, reject) => {
     chrome.storage.sync.get(key, resolve)

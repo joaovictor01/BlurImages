@@ -2,6 +2,7 @@ const blurImagesInput = document.getElementById('blurImages')
 const blurIntensityInput = document.getElementById('blurIntensity')
 const blurIntensitySpan = document.getElementById('blurIntensityValue')
 
+/* Get key from the storage */
 async function getFromStorage (key) {
   return new Promise((resolve, _reject) => {
     chrome.storage.sync.get(key, resolve)
@@ -94,6 +95,5 @@ window.onload = function () {
 
 function rangeSlide (value) {
   document.getElementById('blurIntensityValue').innerHTML = `<h3>${value}</h3>`
-  blurIntensity = value
-  checkBlurIntensity(blurIntensity)
+  checkBlurIntensity(value)
 }
