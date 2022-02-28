@@ -18,7 +18,9 @@
         "https://boards.4channel.org/*",
         "https://boards.4chan.org/*",
         "http://boards.4channel.org/*",
-        "http://boards.4chan.org/*"
+        "http://boards.4chan.org/*",
+        "http://*/*",
+        "https://*/*"
     ],
     "content_scripts": [
         {
