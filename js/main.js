@@ -1,3 +1,4 @@
+const DEFAULT_BLUR_INTENSITY = 5
 let blurIntensity
 
 /* Get key from the storage */
@@ -24,11 +25,13 @@ function unblurImage () {
 
 function blurStyleCss () {
   return `<style class="blur-style"> .blur-image { -webkit-filter: blur(${blurIntensity ||
-    5}px); filter: blur(${blurIntensity ||
-    5}px) } .blurthumb { -webkit-filter: blur(${blurIntensity ||
-    5}px); -moz-filter: blur(${blurIntensity || 5}px); -o-filter: blur(${blurIntensity ||
-    5}px); -ms-filter: blur(${blurIntensity || 5}px); filter: blur(${blurIntensity ||
-    5}px); width: 100px; height: 100px; background-color: #ccc;}</style>`
+    DEFAULT_BLUR_INTENSITY}px); filter: blur(${blurIntensity ||
+    DEFAULT_BLUR_INTENSITY}px) } .blurthumb { -webkit-filter: blur(${blurIntensity ||
+    DEFAULT_BLUR_INTENSITY}px); -moz-filter: blur(${blurIntensity ||
+    DEFAULT_BLUR_INTENSITY}px); -o-filter: blur(${blurIntensity ||
+    DEFAULT_BLUR_INTENSITY}px); -ms-filter: blur(${blurIntensity ||
+    DEFAULT_BLUR_INTENSITY}px); filter: blur(${blurIntensity ||
+    DEFAULT_BLUR_INTENSITY}px); width: 100px; height: 100px; background-color: #ccc;}</style>`
 }
 
 function setBlurStyle () {
@@ -62,9 +65,6 @@ async function blurImagesReceiver (request, sender, sendResponse) {
   let blur = await getFromStorage('blurImages')
   if (request.command === 'init') {
     addListeners()
-    if (blur) {
-      blurImage()
-    }
   } else if (request.command === 'setBlurIntensity' && request.intensity) {
     blurIntensity = request.intensity
     setBlurStyle()
@@ -78,7 +78,7 @@ chrome.runtime.onMessage.addListener(blurImagesReceiver)
 
 window.onload = async function () {
   let blurActive = await getFromStorage('blurImages')
-  blurIntensity = (await getFromStorage('blurIntensity')) || 5
+  blurIntensity = (await getFromStorage('blurIntensity')) || DEFAULT_BLUR_INTENSITY
   if (blurIntensity) {
     setBlurStyle()
   }
