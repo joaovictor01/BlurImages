@@ -2,7 +2,7 @@ const DEFAULT_BLUR_INTENSITY = 5
 let blurIntensity
 
 /* Get key from the storage */
-async function getFromStorage (key) {
+async function getFromStorage(key) {
   return new Promise((resolve, reject) => {
     chrome.storage.sync.get(key, resolve)
   }).then(result => {
@@ -11,7 +11,7 @@ async function getFromStorage (key) {
   })
 }
 
-function blurImage () {
+function blurImage() {
   let images = document.getElementsByTagName('img')
   let images_len = images.length
   for (let i = 0; i < images_len; i++) {
@@ -19,11 +19,11 @@ function blurImage () {
   }
 }
 
-function unblurImage () {
+function unblurImage() {
   $('img').removeClass('blur-image')
 }
 
-function blurStyleCss () {
+function blurStyleCss() {
   return `<style class="blur-style"> .blur-image { -webkit-filter: blur(${blurIntensity ||
     DEFAULT_BLUR_INTENSITY}px); filter: blur(${blurIntensity ||
     DEFAULT_BLUR_INTENSITY}px) } .blurthumb { -webkit-filter: blur(${blurIntensity ||
@@ -34,12 +34,12 @@ function blurStyleCss () {
     DEFAULT_BLUR_INTENSITY}px); width: 100px; height: 100px; background-color: #ccc;}</style>`
 }
 
-function setBlurStyle () {
+function setBlurStyle() {
   $('style.blur-style').remove()
   $(blurStyleCss()).appendTo('head')
 }
 
-async function addListeners () {
+async function addListeners() {
   let blurStyle = blurStyleCss()
   $(blurStyle).appendTo('head')
   let blurActivated = await getFromStorage('blurImages')
@@ -54,14 +54,19 @@ async function addListeners () {
   })
 }
 
-function removeListeners () {
+function removeListeners() {
   $(window).unbind('scroll')
   $('.blur-image').unbind('click')
-  unblurImage()
+  try {
+    unblurImage()
+  } catch (error) {
+    console.log(error)
+  }
+
 }
 
 /* Receive the status or the intensity of the blur */
-async function blurImagesReceiver (request, sender, sendResponse) {
+async function blurImagesReceiver(request, sender, sendResponse) {
   let blur = await getFromStorage('blurImages')
   if (request.command === 'init') {
     addListeners()
